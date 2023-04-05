@@ -12,9 +12,13 @@ class UsersController {
       .table("users")
       .where("email", email)
       .first()
-    console.log({ emailInUse })
     if (emailInUse) {
       throw new AppError("Esse email já está em uso!")
+    }
+    console.log({ password })
+    if (password.length < 6) {
+      console.log({ password })
+      throw new AppError("senha deve conter no mínimo de 6 caracteres")
     }
 
     const hashedPassword = await hash(password, 8)
