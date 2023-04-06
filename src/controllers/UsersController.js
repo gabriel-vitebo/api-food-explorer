@@ -15,9 +15,7 @@ class UsersController {
     if (emailInUse) {
       throw new AppError("Esse email já está em uso!")
     }
-    console.log({ password })
     if (password.length < 6) {
-      console.log({ password })
       throw new AppError("senha deve conter no mínimo de 6 caracteres")
     }
 
