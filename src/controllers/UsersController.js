@@ -1,8 +1,7 @@
 const { hash } = require("bcryptjs")
 const knex = require("../database/knex")
 const AppError = require("../utils/AppError")
-const { uuid } = require("uuidv4")
-
+const { v4: uuidv4 } = require("uuid")
 class UsersController {
   async create(request, response) {
     const { name, email, password, isAdm } = request.body
@@ -21,7 +20,7 @@ class UsersController {
 
     const hashedPassword = await hash(password, 8)
 
-    const id = uuid()
+    const id = uuidv4()
 
     await knex("users").insert({
       name,
