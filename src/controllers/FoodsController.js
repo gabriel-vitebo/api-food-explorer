@@ -80,6 +80,25 @@ class FoodsController {
 
     response.json()
   }
+
+  async showDetails(request, response) {
+    const { id } = request.params
+
+    const food = await knex("foods")
+      .select([
+        "foods.*",
+        "inter.food_id as interFoodId",
+        "inter.id as interId",
+      ])
+      .innerJoin("foodsIngredients as inter", `foods.id`, "interFoodId")
+      .where("interFoodId", "=", id)
+      .first()
+
+    console.log(food, { id })
+    response.json({
+      ...food,
+    })
+  }
 }
 
 module.exports = FoodsController
