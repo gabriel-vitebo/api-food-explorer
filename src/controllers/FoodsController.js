@@ -131,13 +131,18 @@ class FoodsController {
         .map((ingredient) => ingredient.trim())
 
       listingTheFoods = await knex("ingredients")
-        .select(["ingredients.name", "foodsIngredients.ingredients_id"])
+        .select([
+          "ingredients.name as ingredientsName",
+          "foodsIngredients.ingredients_id",
+          "foods.name as foodsName",
+        ])
         .innerJoin(
           "foodsIngredients",
           "ingredients.id",
           "foodsIngredients.ingredients_id"
         )
-        .whereIn("name", filterIngredients)
+        .whereIn("ingredientsName", filterIngredients)
+        .innerJoin("foods", "foods.id", "foodsIngredients.food_id")
     } else {
       listingTheFoods = await knex("foods")
         .whereLike("name", `%${name}%`)
