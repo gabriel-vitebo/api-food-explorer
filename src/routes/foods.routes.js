@@ -7,5 +7,6 @@ const foodsController = new FoodsController()
 
 foodsRoutes.post("/:author_id", foodsController.create)
 foodsRoutes.get("/:id", foodsController.showDetails)
+foodsRoutes.delete("/:id", foodsController.delete)
 
 module.exports = foodsRoutes

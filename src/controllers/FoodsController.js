@@ -112,6 +112,14 @@ class FoodsController {
       ...dto,
     })
   }
+
+  async delete(request, response) {
+    const { id } = request.params
+
+    await knex("foods").where({ id }).delete()
+
+    return response.json()
+  }
 }
 
 module.exports = FoodsController
