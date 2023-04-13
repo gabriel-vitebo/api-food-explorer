@@ -84,19 +84,32 @@ class FoodsController {
   async showDetails(request, response) {
     const { id } = request.params
 
-    const food = await knex("foods")
-      .select([
-        "foods.*",
-        "inter.food_id as interFoodId",
-        "inter.id as interId",
-      ])
-      .innerJoin("foodsIngredients as inter", `foods.id`, "interFoodId")
-      .where("interFoodId", "=", id)
-      .first()
+    const [ingredients, food] = await Promise.all([
+      knex("foods")
+        .select(["ingredients.name"])
+        .innerJoin("foodsIngredients", `foods.id`, "foodsIngredients.food_id")
+        .where("foodsIngredients.food_id", "=", id)
+        .innerJoin(
+          "ingredients",
+          "ingredients.id",
+          "foodsIngredients.ingredients_id"
+        ),
+      knex("foods").select().where({ id }).first(),
+    ])
 
-    console.log(food, { id })
+    const dto = {
+      food: {
+        name: food.name,
+        description: food.description,
+        price: food.price,
+        image: food.image,
+      },
+      ingredients: ingredients.map((ingredient) => {
+        return ingredient.name
+      }),
+    }
     response.json({
-      ...food,
+      ...dto,
     })
   }
 }
