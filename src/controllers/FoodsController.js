@@ -120,6 +120,34 @@ class FoodsController {
 
     return response.json()
   }
+
+  async index(request, response) {
+    const { name, ingredients } = request.query
+
+    let listingTheFoods
+    if (ingredients) {
+      const filterIngredients = ingredients
+        .split(",")
+        .map((ingredient) => ingredient.trim())
+
+      listingTheFoods = await knex("ingredients")
+        .select(["ingredients.name", "foodsIngredients.ingredients_id"])
+        .innerJoin(
+          "foodsIngredients",
+          "ingredients.id",
+          "foodsIngredients.ingredients_id"
+        )
+        .whereIn("name", filterIngredients)
+    } else {
+      listingTheFoods = await knex("foods")
+        .whereLike("name", `%${name}%`)
+        .orderBy("name")
+    }
+
+    console.log({ listingTheFoods })
+
+    return response.json(listingTheFoods)
+  }
 }
 
 module.exports = FoodsController

@@ -5,6 +5,7 @@ const foodsRoutes = Router()
 
 const foodsController = new FoodsController()
 
+foodsRoutes.get("/", foodsController.index)
 foodsRoutes.post("/:author_id", foodsController.create)
 foodsRoutes.get("/:id", foodsController.showDetails)
 foodsRoutes.delete("/:id", foodsController.delete)
