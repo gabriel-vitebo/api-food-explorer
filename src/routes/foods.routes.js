@@ -9,5 +9,6 @@ foodsRoutes.get("/", foodsController.index)
 foodsRoutes.post("/:author_id", foodsController.create)
 foodsRoutes.get("/:id", foodsController.showDetails)
 foodsRoutes.delete("/:id", foodsController.delete)
+foodsRoutes.put("/:id", foodsController.update)
 
 module.exports = foodsRoutes

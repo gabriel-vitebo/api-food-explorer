@@ -81,6 +81,20 @@ class FoodsController {
     response.json()
   }
 
+  async update(request, response) {
+    const { name, description, price, image, ingredients } = request.body
+    const { id } = request.params
+
+    const foodUpdated = await knex("foods").where({ id }).update({
+      name,
+      description,
+      price,
+      image,
+    })
+
+    return response.json()
+  }
+
   async showDetails(request, response) {
     const { id } = request.params
 
