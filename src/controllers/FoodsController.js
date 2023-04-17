@@ -82,10 +82,10 @@ class FoodsController {
   }
 
   async update(request, response) {
-    const { name, description, price, image, ingredients } = request.body
+    const { name, description, price, image } = request.body
     const { id } = request.params
 
-    const foodUpdated = await knex("foods").where({ id }).update({
+    await knex("foods").where({ id }).update({
       name,
       description,
       price,
