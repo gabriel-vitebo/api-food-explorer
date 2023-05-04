@@ -10,7 +10,7 @@ class CategoriesController {
       name,
     })
 
-    response.json()
+    return response.json()
   }
 
   async show(request, response) {

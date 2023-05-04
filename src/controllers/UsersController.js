@@ -27,7 +27,7 @@ class UsersController {
       isAdm,
       id: uuidv4(),
     })
-    response.json()
+    return response.json()
   }
 }
 

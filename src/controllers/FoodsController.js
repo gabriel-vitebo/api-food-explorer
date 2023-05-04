@@ -78,7 +78,7 @@ class FoodsController {
 
     await knex("foodsIngredients").insert(foodsIngredients)
 
-    response.json()
+    return response.json()
   }
 
   async update(request, response) {
@@ -122,7 +122,7 @@ class FoodsController {
         return ingredient.name
       }),
     }
-    response.json({
+    return response.json({
       ...dto,
     })
   }
