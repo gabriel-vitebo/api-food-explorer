@@ -6,15 +6,11 @@ class FoodsController {
   async create(request, response) {
     const { name, description, price, image, ingredients, categoryId } =
       request.body
-    const user_id = request.user.id
+    const { id } = request.params
 
     const food_id = uuidv4()
 
-    const author = await knex
-      .select()
-      .table("users")
-      .where("id", user_id)
-      .first()
+    const author = await knex.select().table("users").where("id", id).first()
 
     if (typeof author === "undefined" || author.isAdm === 0) {
       throw new AppError("Somente administradores podem criar um prato")
@@ -26,7 +22,7 @@ class FoodsController {
       description,
       price,
       image,
-      user_id,
+      id,
       category_id: categoryId,
     })
 
