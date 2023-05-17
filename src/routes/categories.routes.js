@@ -9,6 +9,7 @@ const categoriesController = new CategoriesController()
 categoriesRoutes.use(ensureAuthenticated)
 
 categoriesRoutes.get("/", categoriesController.index)
+categoriesRoutes.get("/all", categoriesController.getAll)
 categoriesRoutes.post("/", categoriesController.create)
 categoriesRoutes.get("/:id", categoriesController.show)
 categoriesRoutes.delete("/:id", categoriesController.delete)

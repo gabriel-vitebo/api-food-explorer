@@ -55,6 +55,12 @@ class CategoriesController {
       .whereLike("categoryName", `%${name}%`)
     return response.json(categories)
   }
+
+  async getAll(_request, response) {
+    const allCategoryName = await knex("categories").select("name", "id")
+
+    return response.json(allCategoryName)
+  }
 }
 
 module.exports = CategoriesController

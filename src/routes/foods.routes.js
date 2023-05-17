@@ -17,7 +17,7 @@ const upload = multer(uploadConfig.MULTER)
 foodsRoutes.use(ensureAuthenticated)
 
 foodsRoutes.get("/", foodsController.index)
-foodsRoutes.post("/:id", foodsController.create)
+foodsRoutes.post("/", foodsController.create)
 foodsRoutes.get("/:id", foodsController.showDetails)
 foodsRoutes.delete("/:id", foodsController.delete)
 foodsRoutes.put("/:id", foodsController.update)
