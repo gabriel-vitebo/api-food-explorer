@@ -5,8 +5,17 @@ const auth = require("../configs/auth")
 
 class FoodsController {
   async create(request, response) {
-    const { name, description, price, image, ingredients, categoryId } =
+    const { name, description, price, ingredients: ingredientsString , categoryId } =
       request.body
+
+    const fileName = request.file.filename
+
+    const ingredients =  JSON.parse(ingredientsString)
+
+    console.log({
+      file: request.file,
+      name, description, price, ingredients, categoryId
+    })
 
     const user_id = request.user.id
 
@@ -19,7 +28,7 @@ class FoodsController {
       .first()
 
     if (typeof author === "undefined" || author.isAdm === 0) {
-      console.log(request.user)
+      
       throw new AppError("Somente administradores podem criar um prato")
     }
 
@@ -27,8 +36,8 @@ class FoodsController {
       id: food_id,
       name,
       description,
+      image: fileName,
       price,
-      image: "/",
       author_id: user_id,
       category_id: categoryId,
     })
