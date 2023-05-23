@@ -2,20 +2,21 @@ const knex = require("../database/knex")
 const { v4: uuidv4 } = require("uuid")
 const AppError = require("../utils/AppError")
 const auth = require("../configs/auth")
+const DiskStorage = require("../providers/DiskStorage")
 
 class FoodsController {
   async create(request, response) {
     const { name, description, price, ingredients: ingredientsString , categoryId } =
       request.body
 
+    const diskStorage = new DiskStorage()
+
     const fileName = request.file.filename
 
-    const ingredients =  JSON.parse(ingredientsString)
+    const foodFileName = await diskStorage.saveFile(fileName)
 
-    console.log({
-      file: request.file,
-      name, description, price, ingredients, categoryId
-    })
+
+    const ingredients =  JSON.parse(ingredientsString)
 
     const user_id = request.user.id
 
@@ -36,7 +37,7 @@ class FoodsController {
       id: food_id,
       name,
       description,
-      image: fileName,
+      image: foodFileName,
       price,
       author_id: user_id,
       category_id: categoryId,
