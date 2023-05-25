@@ -1,5 +1,6 @@
 const knex = require("../database/knex")
 const { v4: uuidv4 } = require("uuid")
+const { baseUrl } = require("../utils/Constants")
 
 class CategoriesController {
   async create(request, response) {
@@ -27,9 +28,9 @@ class CategoriesController {
         "foods.category_id as foodCategoriesId",
         "categories.id as categoriesId",
       ])
-      .innerJoin("foods", "foodCategoriesId", "categoriesId")
+      .join("foods", "foodCategoriesId", "categoriesId")
       .where("foodCategoriesId", id)
-      .orderBy("categoryName")
+
     return response.json(showCategory)
   }
 
@@ -50,10 +51,29 @@ class CategoriesController {
         "foods.description",
         "foods.price",
         "foods.image",
+        "foods.category_id",
+        "categories.id"
       ])
       .innerJoin("foods", "categories.id", "foods.category_id")
       .whereLike("categoryName", `%${name}%`)
-    return response.json(categories)
+
+    const responseData = categories.map(category => {
+      return {
+        name: category.categoryName,
+        // __TEMP___: category,
+        foods: categories.filter((item) => {
+          return item.category_id === category.id
+        }).map((item) => {
+          return {
+            name: item.foodName,
+            price: item.price,
+            image: `${baseUrl}/files/${item.image}`
+          }
+          
+        })
+      }
+    })
+    return response.json(responseData)
   }
 
   async getAll(_request, response) {
