@@ -1,21 +1,21 @@
-const knex = require("../database/knex")
-const { v4: uuidv4 } = require("uuid")
-const { baseUrl } = require("../utils/Constants")
+const knex = require("../database/knex");
+const { v4: uuidv4 } = require("uuid");
+const { baseUrl } = require("../utils/Constants");
 
 class CategoriesController {
   async create(request, response) {
-    const { name } = request.body
+    const { name } = request.body;
 
     await knex("categories").insert({
       id: uuidv4(),
       name,
-    })
+    });
 
-    return response.json()
+    return response.json();
   }
 
   async show(request, response) {
-    const { id } = request.params
+    const { id } = request.params;
 
     const showCategory = await knex("categories")
       .select([
@@ -29,20 +29,20 @@ class CategoriesController {
         "categories.id as categoriesId",
       ])
       .join("foods", "foodCategoriesId", "categoriesId")
-      .where("foodCategoriesId", id)
+      .where("foodCategoriesId", id);
 
-    return response.json(showCategory)
+    return response.json(showCategory);
   }
 
   async delete(request, response) {
-    const { id } = request.params
+    const { id } = request.params;
 
-    await knex("categories").where({ id }).delete()
-    return response.json()
+    await knex("categories").where({ id }).delete();
+    return response.json();
   }
 
   async index(request, response) {
-    const { name } = request.query
+    const { name } = request.query;
 
     const categories = await knex("categories")
       .select([
@@ -52,36 +52,38 @@ class CategoriesController {
         "foods.price",
         "foods.image",
         "foods.category_id",
-        "categories.id"
+        "categories.id",
       ])
       .innerJoin("foods", "categories.id", "foods.category_id")
       .whereLike("categoryName", `%${name}%`)
+      .distinct();
 
-    const responseData = categories.map(category => {
+    const responseData = categories.map((category) => {
       return {
         name: category.categoryName,
         // __TEMP___: category,
-        foods: categories.filter((item) => {
-          return item.category_id === category.id
-        }).map((item) => {
-          return {
-           // id: category.id,
-            name: item.foodName,
-            price: item.price,
-            image: `${baseUrl}/files/${item.image}`
-          }
-          
-        })
-      }
-    })
-    return response.json(responseData)
+        foods: categories
+          .filter((item) => {
+            return item.category_id === category.id;
+          })
+          .map((item) => {
+            return {
+              // id: category.id,
+              name: item.foodName,
+              price: item.price,
+              image: `${baseUrl}/files/${item.image}`,
+            };
+          }),
+      };
+    });
+    return response.json(responseData);
   }
 
   async getAll(_request, response) {
-    const allCategoryName = await knex("categories").select("name", "id")
+    const allCategoryName = await knex("categories").select("name", "id");
 
-    return response.json(allCategoryName)
+    return response.json(allCategoryName);
   }
 }
 
-module.exports = CategoriesController
+module.exports = CategoriesController;
