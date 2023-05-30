@@ -62,6 +62,7 @@ class CategoriesController {
     const responseData = categories.map((category) => {
       return {
         name: category.categoryName,
+        categoryId: category.id,
         // __TEMP___: category,
         foods: categories
           .filter((item) => {
