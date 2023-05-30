@@ -53,6 +53,7 @@ class CategoriesController {
         "foods.image",
         "foods.category_id",
         "categories.id",
+        "foods.id as foodId",
       ])
       .innerJoin("foods", "categories.id", "foods.category_id")
       .whereLike("categoryName", `%${name}%`)
@@ -68,7 +69,7 @@ class CategoriesController {
           })
           .map((item) => {
             return {
-              // id: category.id,
+              foodId: item.foodId,
               name: item.foodName,
               price: item.price,
               image: `${baseUrl}/files/${item.image}`,
