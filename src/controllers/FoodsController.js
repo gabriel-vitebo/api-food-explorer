@@ -95,14 +95,27 @@ class FoodsController {
   }
 
   async update(request, response) {
-    const { name, description, price, image } = request.body;
+    const { name, description, price } = request.body;
     const { id } = request.params;
+
+    const fileName = request.file.filename;
+
+    const food = await knex("foods").select("image").where({ id }).first();
+
+    const diskStorage = new DiskStorage();
+
+    if (food.image) {
+      await diskStorage.deleteFile(food.image);
+    }
+
+    const filename = await diskStorage.saveFile(fileName);
+    food.image = filename;
 
     await knex("foods").where({ id }).update({
       name,
       description,
       price,
-      image,
+      image: food.image,
     });
 
     return response.json();
