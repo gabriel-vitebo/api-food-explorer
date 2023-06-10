@@ -95,27 +95,33 @@ class FoodsController {
   }
 
   async update(request, response) {
-    const { name, description, price } = request.body;
+    const { name, description, price, categoryId } = request.body;
+    console.log(request.body);
+
     const { id } = request.params;
 
-    const fileName = request.file.filename;
+    const fileName = request?.file?.filename;
+    console.log({ fileName });
 
     const food = await knex("foods").select("image").where({ id }).first();
+    console.log({ food });
 
     const diskStorage = new DiskStorage();
 
-    if (food.image) {
+    if (food.image && fileName) {
       await diskStorage.deleteFile(food.image);
     }
-
-    const filename = await diskStorage.saveFile(fileName);
-    food.image = filename;
+    if (fileName) {
+      const filename = await diskStorage.saveFile(fileName);
+      food.image = filename;
+    }
 
     await knex("foods").where({ id }).update({
       name,
       description,
       price,
       image: food.image,
+      category_id: categoryId,
     });
 
     return response.json();
@@ -126,7 +132,7 @@ class FoodsController {
 
     const [ingredients, food] = await Promise.all([
       knex("foods")
-        .select(["ingredients.name"])
+        .select(["ingredients.name", "category_id"])
         .innerJoin("foodsIngredients", `foods.id`, "foodsIngredients.food_id")
         .where("foodsIngredients.food_id", "=", id)
         .innerJoin(
@@ -143,6 +149,7 @@ class FoodsController {
         description: food.description,
         price: food.price,
         image: `${baseUrl}/files/${food.image}`,
+        categoryId: food.category_id,
       },
       ingredients: ingredients.map((ingredient) => {
         return ingredient.name;
