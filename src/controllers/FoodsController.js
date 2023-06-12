@@ -95,8 +95,13 @@ class FoodsController {
   }
 
   async update(request, response) {
-    const { name, description, price, categoryId } = request.body;
-    console.log(request.body);
+    const {
+      name,
+      description,
+      price,
+      categoryId,
+      ingredients: ingredientsString,
+    } = request.body;
 
     const { id } = request.params;
 
@@ -104,9 +109,11 @@ class FoodsController {
     console.log({ fileName });
 
     const food = await knex("foods").select("image").where({ id }).first();
-    console.log({ food });
 
     const diskStorage = new DiskStorage();
+
+    const ingredients = JSON.parse(ingredientsString);
+    console.log({ ingredients });
 
     if (food.image && fileName) {
       await diskStorage.deleteFile(food.image);
@@ -123,6 +130,55 @@ class FoodsController {
       image: food.image,
       category_id: categoryId,
     });
+
+    const savedIngredients = await knex("ingredients").where((qb) => {
+      ingredients.forEach((ingredient) => {
+        qb.orWhere("ingredients.name", "=", ingredient);
+      });
+    });
+
+    const newIngredients = ingredients.filter((ingredient) => {
+      if (savedIngredients.length > 0) {
+        const isNewIngredient = savedIngredients.every((savedIngredient) => {
+          return ingredient != savedIngredient.name;
+        });
+
+        return isNewIngredient;
+      }
+
+      return true;
+    });
+
+    const newIngredientsToSave = newIngredients.map((ingredient) => {
+      return {
+        id: uuidv4(),
+        name: ingredient,
+      };
+    });
+
+    if (newIngredientsToSave.length > 0) {
+      await knex("ingredients").insert(newIngredientsToSave);
+    }
+
+    const allIngredientsInTheFood = [
+      ...newIngredientsToSave,
+      ...savedIngredients,
+    ];
+
+    console.log({ allIngredientsInTheFood });
+
+    const foodsIngredients = allIngredientsInTheFood.map((ingredient) => {
+      return {
+        id: uuidv4(),
+        food_id: id,
+        ingredients_id: ingredient.id,
+      };
+    });
+    console.log({ foodsIngredients });
+
+    await knex("foodsIngredients").where("food_id", id).del();
+
+    await knex("foodsIngredients").insert(foodsIngredients);
 
     return response.json();
   }
