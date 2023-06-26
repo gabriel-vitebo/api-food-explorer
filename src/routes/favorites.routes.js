@@ -9,5 +9,6 @@ const favoritesController = new FavoritesController();
 favoritesRoutes.use(ensureAuthenticated);
 
 favoritesRoutes.post("/", favoritesController.adding);
+favoritesRoutes.delete("/:food_id", favoritesController.delete);
 
 module.exports = favoritesRoutes;
