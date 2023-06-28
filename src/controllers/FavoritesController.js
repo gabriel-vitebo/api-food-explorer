@@ -40,6 +40,19 @@ class FavoritesController {
 
     return response.json();
   }
+
+  async show(request, response) {
+    const user_id = request.user.id;
+    console.log({ user_id });
+
+    const foodIds = await knex("favorites")
+      .where("user_id", user_id)
+      .select("food_id");
+
+    console.log({ foodIds });
+
+    response.json({ favoriteFoods: foodIds });
+  }
 }
 
 module.exports = FavoritesController;
