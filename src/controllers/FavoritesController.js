@@ -51,7 +51,7 @@ class FavoritesController {
 
     console.log({ foodIds });
 
-    response.json({ favoriteFoods: foodIds });
+    response.json({ foodIds });
   }
 }
 

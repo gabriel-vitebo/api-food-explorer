@@ -10,6 +10,6 @@ favoritesRoutes.use(ensureAuthenticated);
 
 favoritesRoutes.post("/", favoritesController.adding);
 favoritesRoutes.delete("/:food_id", favoritesController.delete);
-favoritesRoutes.get("/:id", favoritesController.show);
+favoritesRoutes.get("/", favoritesController.show);
 
 module.exports = favoritesRoutes;

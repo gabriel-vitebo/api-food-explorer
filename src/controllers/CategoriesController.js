@@ -42,8 +42,6 @@ class CategoriesController {
   }
 
   async index(request, response) {
-    const { name } = request.query;
-
     const categories = await knex("categories")
       .select([
         "categories.name as categoryName",
@@ -56,7 +54,6 @@ class CategoriesController {
         "foods.id as foodId",
       ])
       .innerJoin("foods", "categories.id", "foods.category_id")
-      .whereLike("categoryName", `%${name}%`)
       .distinct();
 
     const responseData = categories.map((category) => {
