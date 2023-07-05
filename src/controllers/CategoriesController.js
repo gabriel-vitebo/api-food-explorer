@@ -69,6 +69,7 @@ class CategoriesController {
             return {
               foodId: item.foodId,
               name: item.foodName,
+              description: item.description,
               price: item.price,
               image: `${baseUrl}/files/${item.image}`,
             };

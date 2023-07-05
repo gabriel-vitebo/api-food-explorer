@@ -251,7 +251,6 @@ class FoodsController {
         .whereLike("name", `%${name}%`)
         .orderBy("name");
     }
-
     console.log({ listingTheFoods });
 
     return response.json(listingTheFoods);
