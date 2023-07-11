@@ -225,35 +225,19 @@ class FoodsController {
   }
 
   async index(request, response) {
-    const { name, ingredients } = request.query;
+    const { name } = request.query;
+    const listingTheFoods = await knex("foods")
+      .whereLike("name", `%${name}%`)
+      .orderBy("name");
 
-    let listingTheFoods;
-    if (ingredients) {
-      const filterIngredients = ingredients
-        .split(",")
-        .map((ingredient) => ingredient.trim());
+    const imageName = listingTheFoods.map((listingTheFood) => {
+      return `${baseUrl}/files/${listingTheFood.image}`;
+    });
 
-      listingTheFoods = await knex("ingredients")
-        .select([
-          "ingredients.name as ingredientsName",
-          "foodsIngredients.ingredients_id",
-          "foods.name as foodsName",
-        ])
-        .innerJoin(
-          "foodsIngredients",
-          "ingredients.id",
-          "foodsIngredients.ingredients_id"
-        )
-        .whereIn("ingredientsName", filterIngredients)
-        .innerJoin("foods", "foods.id", "foodsIngredients.food_id");
-    } else {
-      listingTheFoods = await knex("foods")
-        .whereLike("name", `%${name}%`)
-        .orderBy("name");
-    }
-    console.log({ listingTheFoods });
-
-    return response.json(listingTheFoods);
+    return response.json({
+      listingTheFoods,
+      imageName,
+    });
   }
 }
 
