@@ -226,18 +226,44 @@ class FoodsController {
 
   async index(request, response) {
     const { name } = request.query;
-    const listingTheFoods = await knex("foods")
+    const foodsMatch = await knex("foods")
       .whereLike("name", `%${name}%`)
       .orderBy("name");
 
-    const imageName = listingTheFoods.map((listingTheFood) => {
-      return `${baseUrl}/files/${listingTheFood.image}`;
+    const ingredientsMatch = await knex("ingredients").whereLike(
+      "name",
+      `%${name}%`
+    );
+
+    if (ingredientsMatch.length > 0) {
+      const ingredientsIds = ingredientsMatch.map((ingredient) => {
+        return ingredient.id;
+      });
+      // buscar o ID das comidas que deram match com os ingredientes buscados
+      const ingredientsXfoods = await knex("foodsIngredients").where(
+        "ingredients_id",
+        ingredientsIds
+      );
+      // buscar na tabela de foods todas as foods que vieram na query de cima
+
+      console.log({ ingredientsXfoods });
+
+      // juntar os arrays as comidas que deram match por ingredientes com as comidas que deram match pelo nome
+
+      // remover as duplicatas do array
+    }
+
+    const dto = foodsMatch.map((listingTheFood) => {
+      return {
+        id: listingTheFood.id,
+        name: listingTheFood.name,
+        description: listingTheFood.description,
+        price: listingTheFood.price,
+        image: `${baseUrl}/files/${listingTheFood.image}`,
+      };
     });
 
-    return response.json({
-      listingTheFoods,
-      imageName,
-    });
+    return response.json(dto);
   }
 }
 
