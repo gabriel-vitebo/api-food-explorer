@@ -236,21 +236,48 @@ class FoodsController {
     );
 
     if (ingredientsMatch.length > 0) {
-      const ingredientsIds = ingredientsMatch.map((ingredient) => {
-        return ingredient.id;
-      });
+      const ingredientsIds = ingredientsMatch.map(
+        (ingredient) => ingredient.id
+      );
       // buscar o ID das comidas que deram match com os ingredientes buscados
-      const ingredientsXfoods = await knex("foodsIngredients").where(
+
+      const foodsMatchWithIngredient = await knex("foodsIngredients").whereIn(
         "ingredients_id",
         ingredientsIds
       );
+
+      const foodIds = foodsMatchWithIngredient.map((food) => food.food_id);
+
       // buscar na tabela de foods todas as foods que vieram na query de cima
 
-      console.log({ ingredientsXfoods });
+      const allFoodsMatch = await knex("foods")
+        .whereIn("id", foodIds)
+        .orderBy("name");
 
       // juntar os arrays as comidas que deram match por ingredientes com as comidas que deram match pelo nome
 
       // remover as duplicatas do array
+
+      const allFoodsSearched = [
+        ...new Set(
+          allFoodsMatch.concat(
+            allFoodsMatch.filter((food) => foodsMatch.includes(food.id))
+          )
+        ),
+      ];
+
+      console.log({ allFoodsSearched });
+      const dto = allFoodsSearched.map((listingTheFood) => {
+        return {
+          id: listingTheFood.id,
+          name: listingTheFood.name,
+          description: listingTheFood.description,
+          price: listingTheFood.price,
+          image: `${baseUrl}/files/${listingTheFood.image}`,
+        };
+      });
+
+      return response.json(dto);
     }
 
     const dto = foodsMatch.map((listingTheFood) => {
