@@ -226,6 +226,11 @@ class FoodsController {
 
   async index(request, response) {
     const { name } = request.query;
+
+    if (!name) {
+      return json([]);
+    }
+
     const foodsMatch = await knex("foods")
       .whereLike("name", `%${name}%`)
       .orderBy("name");
@@ -258,15 +263,10 @@ class FoodsController {
 
       // remover as duplicatas do array
 
-      const allFoodsSearched = [
-        ...new Set(
-          allFoodsMatch.concat(
-            allFoodsMatch.filter((food) => foodsMatch.includes(food.id))
-          )
-        ),
-      ];
+      const allFoodsSearched = allFoodsMatch.concat(
+        allFoodsMatch.filter((food) => foodsMatch.includes(food.id))
+      );
 
-      console.log({ allFoodsSearched });
       const dto = allFoodsSearched.map((listingTheFood) => {
         return {
           id: listingTheFood.id,
