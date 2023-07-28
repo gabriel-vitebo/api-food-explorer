@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: 'http://localhost:3333'
-}
+  baseUrl: "https://foodexplorerapi-6dz6.onrender.com",
+};
