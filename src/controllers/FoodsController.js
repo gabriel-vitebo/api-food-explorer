@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const knex = require("../database/knex");
 const { v4: uuidv4 } = require("uuid");
 const AppError = require("../utils/AppError");
@@ -200,15 +200,12 @@ class FoodsController {
       knex("foods").select().where({ id }).first(),
     ]);
 
-    const url = process.env.NODE_ENV === 'production' ? process.env.FILE_NAME_PRODUCTION : process.env.FILE_NAME_DEV
-    console.log(`${url}/files/${food.image}`)
-
     const dto = {
       food: {
         name: food.name,
         description: food.description,
         price: food.price,
-        image: `${url}/files/${food.image}`,
+        image: `${baseUrl}/files/${food.image}`,
         categoryId: food.category_id,
       },
       ingredients: ingredients.map((ingredient) => {
