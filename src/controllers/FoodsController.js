@@ -1,4 +1,3 @@
-
 const knex = require("../database/knex");
 const { v4: uuidv4 } = require("uuid");
 const AppError = require("../utils/AppError");
@@ -19,6 +18,7 @@ class FoodsController {
     const diskStorage = new DiskStorage();
 
     const fileName = request.file.filename;
+    console.log({ fileName });
 
     const foodFileName = await diskStorage.saveFile(fileName);
 
