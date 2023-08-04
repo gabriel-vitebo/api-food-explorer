@@ -15,6 +15,21 @@
 <h2>Diagrama das tabelas do banco de dados</h2>
 <img src=".github/Diagrams.png" alt="Imagem do diagrama da api food explorer">
 
+### 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [Node.js](https://nodejs.org/en/)
+- [express](https://expressjs.com/)
+- [knex](https://knexjs.org/)
+- [JavaScript](https://www.javascript.com/)
+
+## 💻 Projeto
+
+[Veja o projeto aqui](https://foodexplorercomplet.netlify.app/)
+
+Esse site é o resultado de 1 ano de muito estudo e dedicação! depois de quase 1 anos de curso da Rocketseat, realizei esse desafio final! Tive que desenvolver um site e-commerce de um restaurante, onde o usuário administrativo pode criar, editar e excluir qualquer prato, além de criar categorias para cada prato especifico , e o usuário comum pode, favoritar qualquer prato, buscar pelo nome da comida ou pelo ingrediente, e adicionar quantos itens desejar no carrinho!
+
 <h2 id="doc">Documentação</h2>
 
 <h3> - Necessário:</h3>
@@ -381,3 +396,24 @@ localhost:3333/ingredients
 ```
 
 <p>A resposta vai ser todos os ingredientes cadastrados no banco de dados</p>
+
+## Licença
+
+Esse projeto está sob a licença MIT.
+
+### Autor
+
+---
+
+<a href="https://www.linkedin.com/in/gabriel-alves-vitebo-2978ab177/">
+ <img style="border-radius: 50%;" src="https://github.com/gabriel-vitebo.png" width="100px;" alt="Foto de perfil do github de Gabriel Vitebo"/>
+ <br />
+ <sub><b>Gabriel Vitebo</b></sub></a> <a href="https://www.linkedin.com/in/gabriel-alves-vitebo-2978ab177/" >✅</a>
+
+Feito com ❤️ por Gabriel Vitebo 👋🏽 Entre em contato!
+
+<div > 
+  <a href="https://www.instagram.com/gabrielvitebo/" target="_blank"><img src="https://img.shields.io/badge/-Instagram-%23E4405F?style=for-the-badge&logo=instagram&logoColor=white" style="border-radius: 10px"/></a>
+  <a href="https://www.linkedin.com/in/gabriel-alves-vitebo-2978ab177/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" style="border-radius: 10px" target="_blank"></a>
+  <a href="mailto:vitebo@outlook.com" ><img src="https://img.shields.io/badge/-vitebo@outlook.com-%230077B5?style=for-the-badge&logo=MicrosoftOutlook&logoColor=white&link=mailto:vitebo@outlook.com" style="border-radius: 10px" target="_blank"></a>
+</div>
