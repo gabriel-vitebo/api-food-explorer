@@ -106,6 +106,10 @@ server is running on Port 3333
 
 <h2>Testando a API</h2>
 
+<p>Caso queira importa todo ambiente configurado, bastar importar do link abaixo</p>
+
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=&uri=https%3A%2F%2Fraw.githubusercontent.com%2Fgabriel-vitebo%2Fapi-food-explorer%2Fmaster%2F.github%2FInsomnia_2023-08-04.json)
+
 <h3 id="Insomnia" > - Insomnia</h3>
 <p>Para testar os métodos da API eu utilizo uma ferramenta chamada <a href="https://insomnia.rest/">Insomnia</a>, porém existe outras ferramentas para testar os métodos HTTP, fique livre para utilizar o que for melhor para você</p>
 <p>Se for preciso, vou deixar abaixo algumas dicas que você pode fazer no insomnia para deixar o projeto mais organizado</p>
